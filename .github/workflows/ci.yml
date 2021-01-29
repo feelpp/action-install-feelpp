@@ -14,7 +14,7 @@ jobs:
     name: linux container - ${{ matrix.image_owner }}${{ matrix.os }}:${{ matrix.codename }}
     steps:
       - name: install feelpp repo
-        uses: feelpp/action-install-feelpp@master
+        uses: feelpp/action-install-feelpp@main
         with:
           repo: deb http://dl.bintray.com/feelpp/${{ matrix.os }} ${{ matrix.codename }} latest
           repo-name: feelpp
