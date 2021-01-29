@@ -4,24 +4,34 @@ branding:
   icon: 'archive'  
   color: 'purple'
 inputs:
+  dist:
+    description: 'ubuntu or debian'
+    required: false
+    default: ubuntu
+  flavor:
+    description: 'distribution flavor'
+    required: false
+    default: focal
+  version:
+    description: 'packages version: latest or stable'
+    required: false
+    default: latest
   repo:
     description: 'feelpp repository line as it appears in the sources.list'
     required: true
+    default: deb https://dl.bintray.com/feelpp/ubuntu focal latest
   repo-name:
     description: 'name of the repository, the name will be used for a new file in the /etc/apt/sources.list.d directory, the .list suffix will be added to the name'
-    required: true
-  keys:
-    description: 'repository keys to import using apt-key'
+    required: false
+    default: feelpp
+  key:
+    description: 'feelpp bintray key'
     required: false
     default: https://bintray.com/user/downloadSubjectPublicKey?username=bintray
-  key-server:
-    description: 'key server to import repository keys from'
+  install:
+    description: "install feelpp packages"
     required: false
-    default: 'keyserver.ubuntu.com'
-  update:
-    description: "perform 'apt update' after adding the repo"
-    required: false
-    default: true
+    default: 'libfeelpp1 libfeelpp-dev feelpp-tools'
 runs:
   using: "composite"
   steps:
@@ -51,17 +61,14 @@ runs:
         
         echo "${{ inputs.repo }}" | $sudocmd tee /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
       shell: bash
-    - name: apt update
+    - name: install feelpp
       run: |
-        if [ "${{ inputs.update }}" == "true" ]; then
-            if [ "$(id --user)" -eq "0" ]; then
-              sudocmd=""
-            else
-              sudocmd="sudo"
-            fi
+          if [ "$(id --user)" -eq "0" ]; then
+            sudocmd=""
+          else
+            sudocmd="sudo"
+          fi
             
-            $sudocmd apt update
-        else
-            echo "update is not requested"
-        fi
+          $sudocmd apt update
+          $sudocmd apt install --reinstall ${{ inputs.install }}
       shell: bash
