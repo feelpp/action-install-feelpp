@@ -1,0 +1,30 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  linux_container:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: debian, codename: buster, image_owner: , package_type: deb}
+          - {os: ubuntu, codename: bionic, image_owner: , package_type: deb}
+          - {os: ubuntu, codename: focal, image_owner: , package_type: deb}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.image_owner }}${{ matrix.os }}:${{ matrix.codename }}
+    name: linux container - ${{ matrix.image_owner }}${{ matrix.os }}:${{ matrix.codename }}
+    steps:
+      - name: install feelpp repo
+        uses: feelpp/action-install-feelpp@master
+        with:
+          repo: deb http://dl.bintray.com/feelpp/${{ matrix.os }} ${{ matrix.codename }} latest
+          repo-name: feelpp
+  linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: add feelpp deb repo
+        uses: myci-actions/add-deb-repo@master
+        with:
+          repo: deb http://dl.bintray.com/feelpp/ubuntu focal latest
+          repo-name: feelpp
+      - name: apt update
+        run: sudo apt update
