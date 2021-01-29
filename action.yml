@@ -1,0 +1,67 @@
+name: 'Install feelpp deb packages'
+description: 'Install feelpp deb packages on a Debian/Ubuntu host'
+branding:
+  icon: 'archive'  
+  color: 'purple'
+inputs:
+  repo:
+    description: 'feelpp repository line as it appears in the sources.list'
+    required: true
+  repo-name:
+    description: 'name of the repository, the name will be used for a new file in the /etc/apt/sources.list.d directory, the .list suffix will be added to the name'
+    required: true
+  keys:
+    description: 'repository keys to import using apt-key'
+    required: false
+    default: https://bintray.com/user/downloadSubjectPublicKey?username=bintray
+  key-server:
+    description: 'key server to import repository keys from'
+    required: false
+    default: 'keyserver.ubuntu.com'
+  update:
+    description: "perform 'apt update' after adding the repo"
+    required: false
+    default: true
+runs:
+  using: "composite"
+  steps:
+    - name: import repository keys
+      run: |
+        if [ ! -z "${{ inputs.keys }}" ]; then
+            if [ "$(id --user)" -eq "0" ]; then
+              sudocmd=""
+            else
+              sudocmd="sudo"
+            fi
+        
+            $sudocmd apt update || true
+            $sudocmd apt install --assume-yes dirmngr
+            $sudocmd apt-key adv --keyserver ${{ inputs.key-server }} --recv-keys ${{ inputs.keys }}
+        else
+            echo "no keys specified, nothing to import"
+        fi
+      shell: bash
+    - name: add debian repo
+      run: |
+        if [ "$(id --user)" -eq "0" ]; then
+          sudocmd=""
+        else
+          sudocmd="sudo"
+        fi
+        
+        echo "${{ inputs.repo }}" | $sudocmd tee /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
+      shell: bash
+    - name: apt update
+      run: |
+        if [ "${{ inputs.update }}" == "true" ]; then
+            if [ "$(id --user)" -eq "0" ]; then
+              sudocmd=""
+            else
+              sudocmd="sudo"
+            fi
+            
+            $sudocmd apt update
+        else
+            echo "update is not requested"
+        fi
+      shell: bash
