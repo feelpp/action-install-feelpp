@@ -16,15 +16,15 @@ jobs:
       - name: install feelpp repo
         uses: feelpp/action-install-feelpp@main
         with:
-          repo: deb http://dl.bintray.com/feelpp/${{ matrix.os }} ${{ matrix.codename }} latest
+          repo: deb https://dl.bintray.com/feelpp/${{ matrix.os }} ${{ matrix.codename }} latest
           repo-name: feelpp
   linux:
     runs-on: ubuntu-20.04
     steps:
       - name: add feelpp deb repo
-        uses: myci-actions/add-deb-repo@master
+        uses: feelpp/action-install-feelpp@main
         with:
-          repo: deb http://dl.bintray.com/feelpp/ubuntu focal latest
+          repo: deb https://dl.bintray.com/feelpp/ubuntu focal latest
           repo-name: feelpp
       - name: apt update
         run: sudo apt update
