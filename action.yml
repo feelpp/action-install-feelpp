@@ -67,5 +67,5 @@ runs:
           fi
             
           $sudocmd apt update
-          $sudocmd apt install --reinstall ${{ inputs.install }}
+          $sudocmd apt install --reinstall -y ${{ inputs.install }}
       shell: bash
