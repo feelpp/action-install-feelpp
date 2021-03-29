@@ -37,6 +37,7 @@ runs:
   steps:
     - name: add feelpp bintray key
       run: |
+          set -x
           if [ "$(id --user)" -eq "0" ]; then
             sudocmd=""
           else
@@ -53,6 +54,7 @@ runs:
       shell: bash
     - name: add feelpp repo
       run: |
+        set -x
         if [ "$(id --user)" -eq "0" ]; then
           sudocmd=""
         else

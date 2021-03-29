@@ -56,6 +56,6 @@ jobs:
         with:
           dist: ubuntu
           flavor: focal
-      - name: apt update
+      - name: Check feelpp apps
         run: |
           feelpp_mesh_partitioner --help
