@@ -1,7 +1,17 @@
 name: ci
 on: [push, pull_request]
 jobs:
+
+  activate:
+    runs-on: ubuntu-latest
+    if: |
+      github.repository == 'feelpp/action-install-feelpp' &&
+      !contains(github.event.head_commit.message, 'ci skip')
+    steps:
+    - run: echo ok go
+
   linux_container:
+    needs: activate
     strategy:
       fail-fast: false
       matrix:
@@ -18,7 +28,9 @@ jobs:
         with:
           dist: ${{ matrix.os }} 
           flavor: ${{ matrix.codename }} 
+
   linux:
+    needs: activate
     strategy:
       fail-fast: false
       matrix:
