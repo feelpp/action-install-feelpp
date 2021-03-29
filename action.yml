@@ -62,9 +62,11 @@ runs:
         echo "deb https://dl.bintray.com/${{ inputs.repo-name }}/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" | $sudocmd tee /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
         if [ "${{ inputs.flavor }}" == "buster" ]; then
              echo "deb http://deb.debian.org/debian buster-backports main" | $sudocmd  tee  /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
-             $sudocmd apt -t buster-backports clang-8 cmake
         fi
         $sudocmd apt update || true
+        if [ "${{ inputs.flavor }}" == "buster" ]; then
+             $sudocmd apt -t buster-backports clang-8 cmake
+        fi
       shell: bash
     - name: install feelpp
       run: |
