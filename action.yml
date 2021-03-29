@@ -45,7 +45,7 @@ runs:
           fi
         
           $sudocmd apt update || true
-          $sudocmd apt-get install -yq apt-transport-https ca-certificates gnupg software-properties-common wget
+          $sudocmd apt install -yq apt-transport-https ca-certificates gnupg software-properties-common wget
           wget -qO - https://bintray.com/user/downloadSubjectPublicKey?username=bintray | $sudocmd  apt-key add -
           
           if [ "${{ inputs.flavor }}" == "bionic" ]; then
@@ -67,7 +67,7 @@ runs:
         fi
         $sudocmd apt update || true
         if [ "${{ inputs.flavor }}" == "buster" ]; then
-             $sudocmd apt-get install -yq  clang-8/buster-backports cmake/buster-backports
+             $sudocmd apt install -yq  clang-8/buster-backports cmake/buster-backports
         fi
       shell: bash
     - name: install feelpp
