@@ -11,6 +11,7 @@ jobs:
     - run: echo ok go
 
   linux_container:
+    if: "!contains(github.event.head_commit.message, 'docker skip')"
     needs: activate
     strategy:
       fail-fast: false
@@ -31,6 +32,7 @@ jobs:
 
   linux:
     needs: activate
+    if: "!contains(github.event.head_commit.message, 'linux skip')"
     strategy:
       fail-fast: false
       matrix:
@@ -50,6 +52,7 @@ jobs:
   self-hosted:
     needs: activate
     runs-on: self-hosted
+    if: "!contains(github.event.head_commit.message, 'self skip')"
     steps:
       - name: add feelpp deb repo
         uses: feelpp/action-install-feelpp@main
