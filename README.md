@@ -31,6 +31,10 @@ See [Feel++ documentation](https://docs.feelpp.org/user/0.109/install/index.html
   - default: libfeelpp1 libfeelpp-dev feelpp-tools
 
 see the action at work [here](https://github.com/feelpp/action-install-feelpp/actions) in docker and ubuntu bionic/focal distributions.
+
+## Note on self-hosted runners
+
+For self-hosted runners, make sure that the user executing the runners can run the following commads passwordless  eg using  sudo and `/etc/sudoers`: `apt`, `apt-key` and `add-apt-repository`
 # License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
