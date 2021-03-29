@@ -44,7 +44,7 @@ runs:
           fi
         
           $sudocmd apt update || true
-          $sudocmd apt-get install apt-transport-https ca-certificates gnupg software-properties-common wget
+          $sudocmd apt-get install -yq apt-transport-https ca-certificates gnupg software-properties-common wget
           wget -qO - https://bintray.com/user/downloadSubjectPublicKey?username=bintray | $sudocmd  apt-key add -
       shell: bash
     - name: add feelpp repo
@@ -66,6 +66,6 @@ runs:
             sudocmd="sudo"
           fi
             
-          $sudocmd apt update
-          $sudocmd apt install --reinstall -y ${{ inputs.install }}
+          $sudocmd apt update 
+          $sudocmd apt install --reinstall -yq ${{ inputs.install }}
       shell: bash
