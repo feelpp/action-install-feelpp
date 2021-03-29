@@ -46,3 +46,16 @@ jobs:
           flavor: ${{ matrix.codename }} 
       - name: apt update
         run: sudo apt update
+  
+  self-hosted:
+    needs: activate
+    runs-on: self-hosted
+    steps:
+      - name: add feelpp deb repo
+        uses: feelpp/action-install-feelpp@main
+        with:
+          dist: ubuntu
+          flavor: focal
+      - name: apt update
+        run: |
+          feelpp_mesh_partitioner --help
