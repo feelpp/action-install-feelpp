@@ -47,7 +47,7 @@ runs:
           $sudocmd apt-get install -yq apt-transport-https ca-certificates gnupg software-properties-common wget
           wget -qO - https://bintray.com/user/downloadSubjectPublicKey?username=bintray | $sudocmd  apt-key add -
           
-          if [ "${{ flavor }}" -eq "bionic"]; then
+          if [ "${{ inputs.flavor }}" -eq "bionic"]; then
             echo bionic
           fi
       shell: bash
@@ -59,8 +59,8 @@ runs:
           sudocmd="sudo"
         fi
         
-        echo "deb https://dl.bintray.com/${{ repo-name }}/${{ dist }} ${{ flavor }} ${{ version }}" | $sudocmd tee /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
-        if [ "${{ flavor }}" -eq "buster"]; then
+        echo "deb https://dl.bintray.com/${{ inputs.repo-name }}/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" | $sudocmd tee /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
+        if [ "${{ inputs.flavor }}" -eq "buster"]; then
              echo "deb http://deb.debian.org/debian buster-backports main" | $sudocmd  tee  /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
         fi
         $sudocmd apt update || true
