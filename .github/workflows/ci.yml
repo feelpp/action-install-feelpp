@@ -16,15 +16,15 @@ jobs:
       - name: install feelpp repo
         uses: feelpp/action-install-feelpp@main
         with:
-          repo: deb https://dl.bintray.com/feelpp/${{ matrix.os }} ${{ matrix.codename }} latest
-          repo-name: feelpp
+          dist: ${{ matrix.os }} 
+          flavor: ${{ matrix.codename }} 
   linux:
     runs-on: ubuntu-20.04
     steps:
       - name: add feelpp deb repo
         uses: feelpp/action-install-feelpp@main
         with:
-          repo: deb https://dl.bintray.com/feelpp/ubuntu focal latest
-          repo-name: feelpp
+          dist: ${{ matrix.os }} 
+          flavor: ${{ matrix.codename }} 
       - name: apt update
         run: sudo apt update
