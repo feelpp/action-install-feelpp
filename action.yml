@@ -17,9 +17,9 @@ inputs:
     required: false
     default: latest
   repo:
-    description: 'feelpp repository line as it appears in the sources.list'
+    description: 'feelpp deb repository'
     required: false
-    default: deb https://dl.bintray.com/feelpp/${{ dist }} ${{ flavor }} ${{ version }}
+    default: https://dl.bintray.com/
   repo-name:
     description: 'name of the repository, the name will be used for a new file in the /etc/apt/sources.list.d directory, the .list suffix will be added to the name'
     required: false
@@ -59,7 +59,7 @@ runs:
           sudocmd="sudo"
         fi
         
-        echo "${{ inputs.repo }}" | $sudocmd tee /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
+        echo "deb https://dl.bintray.com/${{ repo-name }}/${{ dist }} ${{ flavor }} ${{ version }}" | $sudocmd tee /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
         if [ "${{ flavor }}" -eq "buster"]; then
              echo "deb http://deb.debian.org/debian buster-backports main" | $sudocmd  tee  /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
         fi
