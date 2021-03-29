@@ -19,7 +19,7 @@ inputs:
   repo:
     description: 'feelpp repository line as it appears in the sources.list'
     required: true
-    default: deb https://dl.bintray.com/feelpp/ubuntu focal latest
+    default: deb https://dl.bintray.com/feelpp/${{ dist }} ${{ flavor }} ${{ version }}
   repo-name:
     description: 'name of the repository, the name will be used for a new file in the /etc/apt/sources.list.d directory, the .list suffix will be added to the name'
     required: false
@@ -46,6 +46,12 @@ runs:
           $sudocmd apt update || true
           $sudocmd apt-get install -yq apt-transport-https ca-certificates gnupg software-properties-common wget
           wget -qO - https://bintray.com/user/downloadSubjectPublicKey?username=bintray | $sudocmd  apt-key add -
+          if [ "${{ flavor }}" -eq "buster"]; then
+            echo buster
+          fi
+          if [ "${{ flavor }}" -eq "bionic"]; then
+            echo bionic
+          fi
       shell: bash
     - name: add feelpp repo
       run: |
