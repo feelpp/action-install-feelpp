@@ -59,9 +59,9 @@ runs:
           sudocmd="sudo"
         fi
         
-        $sudocmd echo "deb https://dl.bintray.com/${{ inputs.repo-name }}/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" >> /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
+        $sudocmd apt-add-repository "deb https://dl.bintray.com/${{ inputs.repo-name }}/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" 
         if [ "${{ inputs.flavor }}" == "buster" ]; then
-             $sudocmd echo "deb http://deb.debian.org/debian buster-backports main"   >> /etc/apt/sources.list.d/${{ inputs.repo-name }}.list
+             $sudocmd apt-add-repository "deb http://deb.debian.org/debian buster-backports main" 
         fi
         $sudocmd apt update || true
         if [ "${{ inputs.flavor }}" == "buster" ]; then
