@@ -1,5 +1,5 @@
 name: 'Install feelpp deb packages'
-description: 'Install feelpp deb packages on a Debian/Ubuntu host'
+description: 'Install feelpp deb packages on a Debian or Ubuntu host'
 branding:
   icon: 'archive'  
   color: 'purple'
