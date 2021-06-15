@@ -61,7 +61,7 @@ runs:
           sudocmd="sudo"
         fi
         
-        $sudocmd add-apt-repository "deb https://feelpp.jfrog.io/artifactory/${{ inputs.repo-name }}/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" 
+        $sudocmd add-apt-repository "deb https://feelpp.jfrog.io/artifactory/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" 
         if [ "${{ inputs.flavor }}" == "buster" ]; then
              $sudocmd add-apt-repository "deb http://deb.debian.org/debian buster-backports main" 
         fi
