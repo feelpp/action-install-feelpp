@@ -19,15 +19,15 @@ inputs:
   repo:
     description: 'feelpp deb repository'
     required: false
-    default: https://feelpp.jfrog.io/artifactory/
+    default: http://apt.feelpp.org
   repo-name:
     description: 'name of the repository, the name will be used for a new file in the /etc/apt/sources.list.d directory, the .list suffix will be added to the name'
     required: false
     default: feelpp
   key:
-    description: 'feelpp jfrog key'
+    description: 'feelpp key'
     required: false
-    default: https://feelpp.jfrog.io/artifactory/api/security/keypair/gpg-debian/public
+    default: http://apt.feelpp.org/apt.gpg
   install:
     description: "install feelpp packages"
     required: false
@@ -35,7 +35,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: add feelpp bintray key
+    - name: add feelpp apt key
       run: |
           set -x
           if [ "$(id --user)" -eq "0" ]; then
@@ -46,7 +46,7 @@ runs:
         
           $sudocmd apt update || true
           $sudocmd apt install -yq apt-transport-https ca-certificates gnupg software-properties-common wget
-          wget -qO - https://feelpp.jfrog.io/artifactory/api/security/keypair/gpg-debian/public | $sudocmd  apt-key add -
+          wget -qO - http://apt.feelpp.org/apt.gpg | $sudocmd  apt-key add -
           
           if [ "${{ inputs.flavor }}" == "bionic" ]; then
             echo bionic
@@ -61,7 +61,7 @@ runs:
           sudocmd="sudo"
         fi
         
-        $sudocmd add-apt-repository "deb https://feelpp.jfrog.io/artifactory/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" 
+        $sudocmd add-apt-repository "deb http://apt.feelpp.org/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" 
         if [ "${{ inputs.flavor }}" == "buster" ]; then
              $sudocmd add-apt-repository "deb http://deb.debian.org/debian buster-backports main" 
         fi
