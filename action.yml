@@ -5,13 +5,13 @@ branding:
   color: 'purple'
 inputs:
   dist:
-    description: 'ubuntu or debian'
+    description: 'focal, jammy, bullseye, ...'
+    required: false
+    default: jammy
+  flavor:
+    description: 'distribution flavor: ubuntu, debian'
     required: false
     default: ubuntu
-  flavor:
-    description: 'distribution flavor'
-    required: false
-    default: focal
   version:
     description: 'packages version: latest or stable'
     required: false
@@ -48,7 +48,7 @@ runs:
           $sudocmd apt install -yq apt-transport-https ca-certificates gnupg software-properties-common wget
           wget -qO - http://apt.feelpp.org/apt.gpg | $sudocmd  apt-key add -
           
-          if [ "${{ inputs.flavor }}" == "bionic" ]; then
+          if [ "${{ inputs.dist }}" == "bionic" -a "${{ inputs.flavor }}" == "ubuntu"]; then
             echo bionic
           fi
       shell: bash
@@ -61,12 +61,12 @@ runs:
           sudocmd="sudo"
         fi
         
-        $sudocmd add-apt-repository "deb http://apt.feelpp.org/${{ inputs.flavor }}/${{ inputs.dist }} ${{ inputs.flavor }} ${{ inputs.version }}" 
-        if [ "${{ inputs.flavor }}" == "buster" ]; then
+        $sudocmd add-apt-repository "deb http://apt.feelpp.org/${{ inputs.flavor }}/${{ inputs.dist }} ${{ inputs.dist }} ${{ inputs.version }}" 
+        if [ "${{ inputs.dist }}" == "buster" -a "${{ inputs.flavor }}" == "debian" ]; then
              $sudocmd add-apt-repository "deb http://deb.debian.org/debian buster-backports main" 
         fi
         $sudocmd apt update || true
-        if [ "${{ inputs.flavor }}" == "buster" ]; then
+        if [ "${{ inputs.dist }}" == "buster" -a "${{ inputs.flavor }}" == "debian" ]; then
              $sudocmd apt install -yq  clang-8/buster-backports cmake/buster-backports
         fi
       shell: bash
